@@ -67,6 +67,9 @@ We propose **ConvNeXt**, a pure ConvNet model constructed entirely from standard
 ## Installation
 Please check [INSTALL.md](INSTALL.md) for installation instructions. 
 
+Training
+python main.py --model stcnet_tiny --data_path ./Datasets/ImageNet-100/ --output_dir ./outputs/ --drop_path 0.7 --nb_classes 100 --batch_size 64 --lr 4e-3 --update_freq 32 --epochs 900
+
 ## Evaluation
 We give an example evaluation command for a ImageNet-22K pre-trained, then ImageNet-1K fine-tuned ConvNeXt-B:
 
