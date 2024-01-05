@@ -67,8 +67,6 @@ We propose **ConvNeXt**, a pure ConvNet model constructed entirely from standard
 ## Installation
 Please check [INSTALL.md](INSTALL.md) for installation instructions. 
 
-Training
-python main.py --model stcnet_tiny --data_path ./Datasets/ImageNet-100/ --output_dir ./outputs/ --drop_path 0.7 --nb_classes 100 --batch_size 64 --lr 4e-3 --update_freq 32 --epochs 900
 
 ## Evaluation
 We give an example evaluation command for a ImageNet-22K pre-trained, then ImageNet-1K fine-tuned ConvNeXt-B:
@@ -98,6 +96,11 @@ This should give
 - Setting model-specific `--drop_path` is not strictly required in evaluation, as the `DropPath` module in timm behaves the same during evaluation; but it is required in training. See [TRAINING.md](TRAINING.md) or our paper for the values used for different models.
 
 ## Training
+
+- Example:
+  
+python main.py --model stcnet_tiny --data_path ./Datasets/ImageNet-100/ --output_dir ./outputs/ --drop_path 0.7 --nb_classes 100 --batch_size 64 --lr 4e-3 --update_freq 32 --epochs 900
+
 See [TRAINING.md](TRAINING.md) for training and fine-tuning instructions.
 
 ## Acknowledgement
