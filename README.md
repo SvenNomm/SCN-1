@@ -101,7 +101,7 @@ This should give
   
 python main.py --model stcnet_tiny --data_path ./Datasets/ImageNet-100/ --output_dir ./outputs/ --drop_path 0.7 --nb_classes 100 --batch_size 64 --lr 4e-3 --update_freq 32 --epochs 900
 
-See [TRAINING.md](TRAINING.md) for training and fine-tuning instructions.
+- See [TRAINING.md](TRAINING.md) for more training and fine-tuning instructions.
 
 ## Acknowledgement
 This repository is built using the [timm](https://github.com/rwightman/pytorch-image-models) library, [DeiT](https://github.com/facebookresearch/deit) and [BEiT](https://github.com/microsoft/unilm/tree/master/beit) repositories.
