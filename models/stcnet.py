@@ -14,7 +14,7 @@ from timm.models.registry import register_model
 class LayerNorm(nn.Module):
     r""" LayerNorm that supports two data formats: channels_first (default) or channels_last.
     The channels_first corresponds to inputs with shape (batch_size, channels, height, width),
-    while channels_last corresponds to inputs with shape (batch_size, height, width, channels) .
+    while channels_last corresponds to inputs with shape (batch_size, height, width, channels).
     """
 
     def __init__(self, normalized_shape, eps=1e-6, data_format="channels_first"):
@@ -138,7 +138,7 @@ class STCNet(nn.Module):
         dp_rates = [x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))]
         for i in range(4):
             stage_head = nn.Sequential(
-                nn.Conv2d(dim_in, dims[i], kernel_size=3, padding=1),  # spatial-wise conv
+                nn.Conv2d(dim_in, dims[i], kernel_size=3, padding=1), 
                 LayerNorm(dims[i], eps=1e-6),
                 nn.GELU(),
                 nn.Conv2d(dims[i], dims[i], kernel_size=1, padding=0),
