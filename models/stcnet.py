@@ -75,7 +75,7 @@ class SCBlock(nn.Module):
     def __init__(self, dim, drop_path=0., layer_scale_init_value=1e-6):
         super().__init__()
         self.scn_spatial = nn.Sequential(
-            nn.Conv2d(dim, dim, kernel_size=3, padding=1, groups=dim),  # spatial-wise conv
+            nn.Conv2d(dim, dim, kernel_size=3, padding=1),
             LayerNorm(dim, eps=1e-6),
             nn.GELU())
 
