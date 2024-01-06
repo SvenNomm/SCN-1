@@ -118,13 +118,13 @@ class STCNet(nn.Module):
     """
 
     def __init__(self, in_chans=3, num_classes=1000,
-                 depths=[3, 3, 3, 3], dims=[64, 128, 256, 512], drop_path_rate=0.,
+                 depths=[3, 3, 6, 3], dims=[64, 128, 256, 512], drop_path_rate=0.,
                  layer_scale_init_value=1e-6, head_init_scale=1.,
                  ):
         super().__init__()
 
         self.stage_stem = nn.Sequential(
-            nn.Conv2d(in_chans*4, dims[0], kernel_size=3, padding=1),  # spatial-wise conv
+            nn.Conv2d(in_chans*4, dims[0], kernel_size=3, padding=1), 
             LayerNorm(dims[0], eps=1e-6),
             nn.GELU(),
             nn.Conv2d(dims[0], dims[0], kernel_size=1, padding=0),
