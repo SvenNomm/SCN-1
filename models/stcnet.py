@@ -75,7 +75,7 @@ class SCBlock(nn.Module):
     def __init__(self, dim, drop_path=0., layer_scale_init_value=1e-6):
         super().__init__()
         self.scn_spatial = nn.Sequential(
-            nn.Conv2d(dim, dim, kernel_size=3, padding=1),
+            nn.Conv2d(dim, dim, kernel_size=3, padding=1, groups=dim//64),
             LayerNorm(dim, eps=1e-6),
             nn.GELU())
 
@@ -118,13 +118,13 @@ class STCNet(nn.Module):
     """
 
     def __init__(self, in_chans=3, num_classes=1000,
-                 depths=[3, 3, 6, 3], dims=[64, 128, 256, 512], drop_path_rate=0.,
+                 depths=[3, 3, 9, 3], dims=[64, 128, 256, 512], drop_path_rate=0.,
                  layer_scale_init_value=1e-6, head_init_scale=1.,
                  ):
         super().__init__()
 
         self.stage_stem = nn.Sequential(
-            nn.Conv2d(in_chans*4, dims[0], kernel_size=3, padding=1), 
+            nn.Conv2d(in_chans*4, dims[0], kernel_size=3, padding=1),
             LayerNorm(dims[0], eps=1e-6),
             nn.GELU(),
             nn.Conv2d(dims[0], dims[0], kernel_size=1, padding=0),
@@ -138,10 +138,10 @@ class STCNet(nn.Module):
         dp_rates = [x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))]
         for i in range(4):
             stage_head = nn.Sequential(
-                nn.Conv2d(dim_in, dims[i], kernel_size=3, padding=1), 
-                LayerNorm(dims[i], eps=1e-6),
+                nn.Conv2d(dim_in, dim_in, kernel_size=3, padding=1, groups=2**i),
+                LayerNorm(dim_in, eps=1e-6),
                 nn.GELU(),
-                nn.Conv2d(dims[i], dims[i], kernel_size=1, padding=0),
+                nn.Conv2d(dim_in, dims[i], kernel_size=1, padding=0),
                 LayerNorm(dims[i], eps=1e-6),
                 nn.GELU())
             self.stages_head.append(stage_head)
