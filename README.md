@@ -98,8 +98,9 @@ This should give
 ## Training
 
 - Example:
-  
-python main.py --model stcnet_tiny --data_path ./Datasets/ImageNet-100/ --output_dir ./outputs/ --drop_path 0.1 --nb_classes 100 --batch_size 64 --lr 4e-3 --update_freq 32 --epochs 900
+
+python main.py --model convnext_tiny --data_path ./Datasets/ImageNet-100/ --output_dir ./outputs/ --drop_path 0.1 --nb_classes 100 --batch_size 32 --lr 2e-3 --update_freq 32 --epochs 900
+python main.py --model stcnet_tiny --data_path   ./Datasets/ImageNet-100/ --output_dir ./outputs/ --drop_path 0.1 --nb_classes 100 --batch_size 32 --lr 2e-3 --update_freq 32 --epochs 900
 
 - See [TRAINING.md](TRAINING.md) for more training and fine-tuning instructions.
 
