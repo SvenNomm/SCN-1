@@ -32,6 +32,7 @@ from utils import NativeScalerWithGradNormCount as NativeScaler
 import utils
 from models import stcnet
 from models import efficientscn
+from models import ConvNeXt
 
 def str2bool(v):
     """
