@@ -75,7 +75,7 @@ class SCBlock(nn.Module):
     def __init__(self, dim, drop_path=0., layer_scale_init_value=1e-6):
         super().__init__()
         self.scn_spatial = nn.Sequential(
-            nn.Conv2d(dim, dim, kernel_size=3, padding=1, groups=dim//64),
+            nn.Conv2d(dim, dim, kernel_size=3, padding=1, groups=dim//32),
             LayerNorm(dim, eps=1e-6),
             nn.GELU())
 
@@ -204,7 +204,7 @@ model_urls = {
 
 @register_model
 def stcnet_tiny(pretrained=False, in_22k=False, **kwargs):
-    model = STCNet(depths=[3, 3, 6, 3], dims=[64, 128, 256, 512], **kwargs)
+    model = STCNet(depths=[3, 3, 9, 3], dims=[96, 192, 384, 768], **kwargs)
     if pretrained:
         url = model_urls['stcnet_tiny_22k'] if in_22k else model_urls['stcnet_tiny_1k']
         checkpoint = torch.hub.load_state_dict_from_url(url=url, map_location="cpu", check_hash=True)
