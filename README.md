@@ -98,12 +98,11 @@ This should give
 
 - Training for Imagenet-1K:
 ```
-python main.py --model convnext_tiny --data_path ./ImageNet_1K/ --output_dir ./outputs/ --drop_path 0.1 --nb_classes 1000 --batch_size 32 --lr 2e-3 --update_freq 32 --epochs 300
+python main.py --model convnext_tiny --data_path ./ImageNet_1K/ --output_dir ./outputs/ --drop_path 0.1 --nb_classes 1000 --batch_size 32 --lr 2e-3 --update_freq 32 --epochs 300 --imagenet_default_mean_and_std True
 
-python main.py --model convnextscn_tiny --data_path ./ImageNet_1K/ --output_dir ./outputs/ --drop_path 0.1 --nb_classes 1000 --batch_size 32 --lr 2e-3 --update_freq 32 --epochs 300
+python main.py --model convnextscn_tiny --data_path ./ImageNet_1K/ --output_dir ./outputs/ --drop_path 0.1 --nb_classes 1000 --batch_size 32 --lr 2e-3 --update_freq 32 --epochs 300 --imagenet_default_mean_and_std True
 
-python main.py --model sconvnet_tiny --data_path ./ImageNet_1K/ --output_dir ./outputs/ --drop_path 0.1 --nb_classes 1000 --batch_size 32 --lr 2e-3 --update_freq 32 --epochs 300
-
+python main.py --model sconvnet_tiny --data_path ./ImageNet_1K/ --output_dir ./outputs/ --drop_path 0.1 --nb_classes 1000 --batch_size 32 --lr 2e-3 --update_freq 32 --epochs 300 --imagenet_default_mean_and_std True
 ```
 
 - Training for Imagenet-100:
