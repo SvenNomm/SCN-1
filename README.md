@@ -67,7 +67,6 @@ We propose **ConvNeXt**, a pure ConvNet model constructed entirely from standard
 ## Installation
 Please check [INSTALL.md](INSTALL.md) for installation instructions. 
 
-
 ## Evaluation
 We give an example evaluation command for a ImageNet-22K pre-trained, then ImageNet-1K fine-tuned ConvNeXt-B:
 
@@ -97,13 +96,26 @@ This should give
 
 ## Training
 
-- Example:
+- Training for Imagenet-1K:
+```
+python main.py --model convnext_tiny --data_path ./ImageNet_1K/ --output_dir ./outputs/ --drop_path 0.1 --nb_classes 1000 --batch_size 32 --lr 2e-3 --update_freq 32 --epochs 300
 
-python main.py --model convnext_tiny --data_path ./Datasets/ImageNet-100/ --output_dir ./outputs/ --drop_path 0.1 --nb_classes 100 --batch_size 32 --lr 2e-3 --update_freq 32 --epochs 900
+python main.py --model convnextscn_tiny --data_path ./ImageNet_1K/ --output_dir ./outputs/ --drop_path 0.1 --nb_classes 1000 --batch_size 32 --lr 2e-3 --update_freq 32 --epochs 300
 
-python main.py --model stcnet_tiny --data_path   ./Datasets/ImageNet-100/ --output_dir ./outputs/ --drop_path 0.1 --nb_classes 100 --batch_size 32 --lr 2e-3 --update_freq 32 --epochs 900
+python main.py --model sconvnet_tiny --data_path ./ImageNet_1K/ --output_dir ./outputs/ --drop_path 0.1 --nb_classes 1000 --batch_size 32 --lr 2e-3 --update_freq 32 --epochs 300
 
-- See [TRAINING.md](TRAINING.md) for more training and fine-tuning instructions.
+```
+
+- Training for Imagenet-100:
+```
+python main.py --model convnext_tiny --data_path ./ImageNet-100/ --output_dir ./outputs/ --drop_path 0.1 --nb_classes 100 --batch_size 32 --lr 2e-3 --update_freq 32 --epochs 300
+
+python main.py --model convnextscn_tiny --data_path ./ImageNet-100/ --output_dir ./outputs/ --drop_path 0.1 --nb_classes 100 --batch_size 32 --lr 2e-3 --update_freq 32 --epochs 300
+
+python main.py --model sconvnet_tiny --data_path ./ImageNet-100/ --output_dir ./outputs/ --drop_path 0.1 --nb_classes 100 --batch_size 32 --lr 2e-3 --update_freq 32 --epochs 300
+```
+
+- See [TRAINING.md](TRAINING.md) for training and fine-tuning instructions.
 
 ## Acknowledgement
 This repository is built using the [timm](https://github.com/rwightman/pytorch-image-models) library, [DeiT](https://github.com/facebookresearch/deit) and [BEiT](https://github.com/microsoft/unilm/tree/master/beit) repositories.

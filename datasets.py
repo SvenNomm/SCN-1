@@ -34,9 +34,10 @@ def build_dataset(is_train, args):
         print("reading from datapath", args.data_path)
         root = os.path.join(args.data_path, 'train' if is_train else 'val')
         dataset = datasets.ImageFolder(root, transform=transform)
-        nb_classes = args.nb_classes
+        nb_classes = 1000
     elif args.data_set == "image_folder":
-        root = args.data_path if is_train else args.eval_data_path
+        # root = args.data_path if is_train else args.eval_data_path
+        root = os.path.join(args.data_path, 'train' if is_train else 'val')
         dataset = datasets.ImageFolder(root, transform=transform)
         nb_classes = args.nb_classes
         assert len(dataset.class_to_idx) == nb_classes
@@ -50,11 +51,8 @@ def build_dataset(is_train, args):
 def build_transform(is_train, args):
     resize_im = args.input_size > 32
     imagenet_default_mean_and_std = args.imagenet_default_mean_and_std
-    mean = IMAGENET_INCEPTION_MEAN if not imagenet_default_mean_and_std else IMAGENET_DEFAULT_MEAN
-    std = IMAGENET_INCEPTION_STD if not imagenet_default_mean_and_std else IMAGENET_DEFAULT_STD
-
-    mean = [0.46134715, 0.45715092, 0.38573534]
-    std = [0.25964019, 0.24518634, 0.25997446]
+    mean = args.dataset_mean_and_std[0] if not imagenet_default_mean_and_std else IMAGENET_DEFAULT_MEAN
+    std = args.dataset_mean_and_std[1] if not imagenet_default_mean_and_std else IMAGENET_DEFAULT_STD
 
     if is_train:
         # this should always dispatch to transforms_imagenet_train

@@ -6,6 +6,7 @@
 # LICENSE file in the root directory of this source tree.
 
 
+
 import argparse
 import datetime
 import numpy as np
@@ -30,9 +31,12 @@ from engine import train_one_epoch, evaluate
 from torchsummary import summary
 from utils import NativeScalerWithGradNormCount as NativeScaler
 import utils
-from models import stcnet
-from models import efficientscn
 from models import ConvNeXt
+from models import ConvNextSCN
+from models import SConvNet
+
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
 def str2bool(v):
     """
@@ -58,7 +62,7 @@ def get_args_parser():
                         help='gradient accumulation steps')
 
     # Model parameters
-    parser.add_argument('--model', default='stcnet_tiny', type=str, metavar='MODEL',
+    parser.add_argument('--model', default='convnext_tiny', type=str, metavar='MODEL',
                         help='Name of model to train')
     parser.add_argument('--drop_path', type=float, default=0, metavar='PCT',
                         help='Drop path rate (default: 0.0)')
@@ -147,15 +151,18 @@ def get_args_parser():
     parser.add_argument('--model_prefix', default='', type=str)
 
     # Dataset parameters
-    parser.add_argument('--data_path', default='/media/juhuang/DATA/ubuntu_files/Datasets/ImageNet-100/', type=str,
+    parser.add_argument('--data_path', default='./Datasets/ImageNet-100/', type=str,
                         help='dataset path')
     parser.add_argument('--eval_data_path', default=None, type=str,
                         help='dataset path for evaluation')
     parser.add_argument('--nb_classes', default=100, type=int,
                         help='number of the classification types')
-    parser.add_argument('--imagenet_default_mean_and_std', type=str2bool, default=True)
-    parser.add_argument('--data_set', default='IMNET', choices=['CIFAR', 'IMNET', 'image_folder'],
-                        type=str, help='ImageNet dataset path')
+    parser.add_argument('--data_set', default='image_folder', choices=['CIFAR', 'IMNET', 'image_folder'],
+                        type=str, help='dataset path')
+    parser.add_argument('--imagenet_default_mean_and_std', type=str2bool, default=False)
+    parser.add_argument('--dataset_mean_and_std', nargs='+', type=float, default=[[0.46134715, 0.45715092, 0.38573534],
+                                                                                  [0.25964019, 0.24518634, 0.25997446]],
+                        help='mean and std of the training dataset')
     parser.add_argument('--output_dir', default='./outputs',
                         help='path where to save, empty for no saving')
     parser.add_argument('--log_dir', default=None,
