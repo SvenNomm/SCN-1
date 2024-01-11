@@ -11,10 +11,10 @@ pip install submitit
 We will give example commands for both multi-node and single-machine training below.
 
 ## ImageNet-1K Training 
-stcnet-T training on ImageNet-1K with 4 8-GPU nodes:
+sconvnet-T training on ImageNet-1K with 4 8-GPU nodes:
 ```
 python run_with_submitit.py --nodes 4 --ngpus 8 \
---model stcnet_tiny --drop_path 0.1 \
+--model sconvnet_tiny --drop_path 0.1 \
 --batch_size 128 --lr 4e-3 --update_freq 1 \
 --model_ema true --model_ema_eval true \
 --data_path /path/to/imagenet-1k \
@@ -30,7 +30,7 @@ python run_with_submitit.py --nodes 4 --ngpus 8 \
 You can use the following command to run this experiment on a single machine: 
 ```
 python -m torch.distributed.launch --nproc_per_node=8 main.py \
---model stcnet_tiny --drop_path 0.1 \
+--model sconvnet_tiny --drop_path 0.1 \
 --batch_size 128 --lr 4e-3 --update_freq 4 \
 --model_ema true --model_ema_eval true \
 --data_path /path/to/imagenet-1k 
@@ -39,17 +39,17 @@ python -m torch.distributed.launch --nproc_per_node=8 main.py \
 
 - Here, the effective batch size = `--nproc_per_node` * `--batch_size` * `--update_freq`. In the example above, the effective batch size is `8*128*4 = 4096`. Running on one machine, we increased `update_freq` so that the total batch size is unchanged.
 
-To train other stcnet variants, `--model` and `--drop_path` need to be changed. Examples are given below, each with both multi-node and single-machine commands:
+To train other sconvnet variants, `--model` and `--drop_path` need to be changed. Examples are given below, each with both multi-node and single-machine commands:
 
 <details>
 <summary>
-stcnet-S
+sconvnet-S
 </summary>
 
 Multi-node
 ```
 python run_with_submitit.py --nodes 4 --ngpus 8 \
---model stcnet_small --drop_path 0.4 \
+--model sconvnet_small --drop_path 0.4 \
 --batch_size 128 --lr 4e-3 --update_freq 1 \
 --model_ema true --model_ema_eval true \
 --data_path /path/to/imagenet-1k \
@@ -59,7 +59,7 @@ python run_with_submitit.py --nodes 4 --ngpus 8 \
 Single-machine
 ```
 python -m torch.distributed.launch --nproc_per_node=8 main.py \
---model stcnet_small --drop_path 0.4 \
+--model sconvnet_small --drop_path 0.4 \
 --batch_size 128 --lr 4e-3 --update_freq 4 \
 --model_ema true --model_ema_eval true \
 --data_path /path/to/imagenet-1k \
@@ -68,13 +68,13 @@ python -m torch.distributed.launch --nproc_per_node=8 main.py \
 </details>
 <details>
 <summary>
-stcnet-B
+sconvnet-B
 </summary>
 
 Multi-node
 ```
 python run_with_submitit.py --nodes 4 --ngpus 8 \
---model stcnet_base --drop_path 0.5 \
+--model sconvnet_base --drop_path 0.5 \
 --batch_size 128 --lr 4e-3 --update_freq 1 \
 --model_ema true --model_ema_eval true \
 --data_path /path/to/imagenet-1k \
@@ -84,7 +84,7 @@ python run_with_submitit.py --nodes 4 --ngpus 8 \
 Single-machine
 ```
 python -m torch.distributed.launch --nproc_per_node=8 main.py \
---model stcnet_base --drop_path 0.5 \
+--model sconvnet_base --drop_path 0.5 \
 --batch_size 128 --lr 4e-3 --update_freq 4 \
 --model_ema true --model_ema_eval true \
 --data_path /path/to/imagenet-1k \
@@ -94,13 +94,13 @@ python -m torch.distributed.launch --nproc_per_node=8 main.py \
 </details>
 <details>
 <summary>
-stcnet-L
+sconvnet-L
 </summary>
 
 Multi-node
 ```
 python run_with_submitit.py --nodes 8 --ngpus 8 \
---model stcnet_large --drop_path 0.5 \
+--model sconvnet_large --drop_path 0.5 \
 --batch_size 64 --lr 4e-3 --update_freq 1 \
 --model_ema true --model_ema_eval true \
 --data_path /path/to/imagenet-1k \
@@ -110,7 +110,7 @@ python run_with_submitit.py --nodes 8 --ngpus 8 \
 Single-machine
 ```
 python -m torch.distributed.launch --nproc_per_node=8 main.py \
---model stcnet_large --drop_path 0.5 \
+--model sconvnet_large --drop_path 0.5 \
 --batch_size 64 --lr 4e-3 --update_freq 8 \
 --model_ema true --model_ema_eval true \
 --data_path /path/to/imagenet-1k \
@@ -121,13 +121,13 @@ python -m torch.distributed.launch --nproc_per_node=8 main.py \
 
 <details>
 <summary>
-stcnet-S (isotropic)
+sconvnet-S (isotropic)
 </summary>
 
 Multi-node
 ```
 python run_with_submitit.py --nodes 4 --ngpus 8 \
---model stcnet_isotropic_small --drop_path 0.1 \
+--model sconvnet_isotropic_small --drop_path 0.1 \
 --batch_size 128 --lr 4e-3 --update_freq 1 \
 --layer_scale_init_value 0 \
 --warmup_epochs 50 --model_ema true --model_ema_eval true \
@@ -138,7 +138,7 @@ python run_with_submitit.py --nodes 4 --ngpus 8 \
 Single-machine 
 ```
 python -m torch.distributed.launch --nproc_per_node=8 main.py \
---model stcnet_isotropic_small --drop_path 0.1 \
+--model sconvnet_isotropic_small --drop_path 0.1 \
 --batch_size 128 --lr 4e-3 --update_freq 4 \
 --layer_scale_init_value 0 \
 --warmup_epochs 50 --model_ema true --model_ema_eval true \
@@ -150,13 +150,13 @@ python -m torch.distributed.launch --nproc_per_node=8 main.py \
 
 <details>
 <summary>
-stcnet-B (isotropic)
+sconvnet-B (isotropic)
 </summary>
 
 Multi-node
 ```
 python run_with_submitit.py --nodes 4 --ngpus 8 \
---model stcnet_isotropic_base --drop_path 0.2 \
+--model sconvnet_isotropic_base --drop_path 0.2 \
 --batch_size 128 --lr 4e-3 --update_freq 1 \
 --layer_scale_init_value 0 \
 --warmup_epochs 50 --model_ema true --model_ema_eval true \
@@ -167,7 +167,7 @@ python run_with_submitit.py --nodes 4 --ngpus 8 \
 Single-machine 
 ```
 python -m torch.distributed.launch --nproc_per_node=8 main.py \
---model stcnet_isotropic_base --drop_path 0.2 \
+--model sconvnet_isotropic_base --drop_path 0.2 \
 --batch_size 128 --lr 4e-3 --update_freq 4 \
 --layer_scale_init_value 0 \
 --warmup_epochs 50 --model_ema true --model_ema_eval true \
@@ -179,13 +179,13 @@ python -m torch.distributed.launch --nproc_per_node=8 main.py \
 
 <details>
 <summary>
-stcnet-L (isotropic)
+sconvnet-L (isotropic)
 </summary>
 
 Multi-node
 ```
 python run_with_submitit.py --nodes 8 --ngpus 8 \
---model stcnet_isotropic_large --drop_path 0.5 \
+--model sconvnet_isotropic_large --drop_path 0.5 \
 --batch_size 64 --lr 4e-3 --update_freq 1 \
 --warmup_epochs 50 --model_ema true --model_ema_eval true \
 --data_path /path/to/imagenet-1k \
@@ -195,7 +195,7 @@ python run_with_submitit.py --nodes 8 --ngpus 8 \
 Single-machine
 ```
 python -m torch.distributed.launch --nproc_per_node=8 main.py \
---model stcnet_isotropic_large --drop_path 0.5 \
+--model sconvnet_isotropic_large --drop_path 0.5 \
 --batch_size 64 --lr 4e-3 --update_freq 8 \
 --warmup_epochs 50 --model_ema true --model_ema_eval true \
 --data_path /path/to/imagenet-1k \
@@ -207,12 +207,12 @@ python -m torch.distributed.launch --nproc_per_node=8 main.py \
 ## ImageNet-22K Pre-training
 ImageNet-22K is significantly larger than ImageNet-1K in terms of data size, so we use 16 8-GPU nodes for pre-training on ImageNet-22K.
 
-stcnet-B pre-training on ImageNet-22K:
+sconvnet-B pre-training on ImageNet-22K:
 
 Multi-node
 ```
 python run_with_submitit.py --nodes 16 --ngpus 8 \
---model stcnet_base --drop_path 0.1 \
+--model sconvnet_base --drop_path 0.1 \
 --batch_size 32 --lr 4e-3 --update_freq 1 \
 --warmup_epochs 5 --epochs 90 \
 --data_set image_folder --nb_classes 21841 --disable_eval true \
@@ -223,7 +223,7 @@ python run_with_submitit.py --nodes 16 --ngpus 8 \
 Single-machine
 ```
 python -m torch.distributed.launch --nproc_per_node=8 main.py \
---model stcnet_base --drop_path 0.1 \
+--model sconvnet_base --drop_path 0.1 \
 --batch_size 32 --lr 4e-3 --update_freq 16 \
 --warmup_epochs 5 --epochs 90 \
 --data_set image_folder --nb_classes 21841 --disable_eval true \
@@ -233,13 +233,13 @@ python -m torch.distributed.launch --nproc_per_node=8 main.py \
 
 <details>
 <summary>
-stcnet-L
+sconvnet-L
 </summary>
 
 Multi-node
 ```
 python run_with_submitit.py --nodes 16 --ngpus 8 \
---model stcnet_large --drop_path 0.1 \
+--model sconvnet_large --drop_path 0.1 \
 --batch_size 32 --lr 4e-3 --update_freq 1 \
 --warmup_epochs 5 --epochs 90 \
 --data_set image_folder --nb_classes 21841 --disable_eval true \
@@ -250,7 +250,7 @@ python run_with_submitit.py --nodes 16 --ngpus 8 \
 Single-machine
 ```
 python -m torch.distributed.launch --nproc_per_node=8 main.py \
---model stcnet_large --drop_path 0.1 \
+--model sconvnet_large --drop_path 0.1 \
 --batch_size 32 --lr 4e-3 --update_freq 16 \
 --warmup_epochs 5 --epochs 90 \
 --data_set image_folder --nb_classes 21841 --disable_eval true \
@@ -262,13 +262,13 @@ python -m torch.distributed.launch --nproc_per_node=8 main.py \
 
 <details>
 <summary>
-stcnet-XL
+sconvnet-XL
 </summary>
 
 Multi-node
 ```
 python run_with_submitit.py --nodes 16 --ngpus 8 \
---model stcnet_xlarge --drop_path 0.2 \
+--model sconvnet_xlarge --drop_path 0.2 \
 --batch_size 32 --lr 4e-3 --update_freq 1 \
 --warmup_epochs 5 --epochs 90 \
 --data_set image_folder --nb_classes 21841 --disable_eval true \
@@ -279,7 +279,7 @@ python run_with_submitit.py --nodes 16 --ngpus 8 \
 Single-machine
 ```
 python -m torch.distributed.launch --nproc_per_node=8 main.py \
---model stcnet_xlarge --drop_path 0.2 \
+--model sconvnet_xlarge --drop_path 0.2 \
 --batch_size 32 --lr 4e-3 --update_freq 16 \
 --warmup_epochs 5 --epochs 90 \
 --data_set image_folder --nb_classes 21841 --disable_eval true \
@@ -294,12 +294,12 @@ python -m torch.distributed.launch --nproc_per_node=8 main.py \
 ### Finetune from ImageNet-1K pre-training 
 The training commands given above for ImageNet-1K use the default resolution (224). We also fine-tune these trained models with a larger resolution (384). Please specify the path or url to the checkpoint in `--finetune`.
 
-stcnet-B fine-tuning on ImageNet-1K (384x384):
+sconvnet-B fine-tuning on ImageNet-1K (384x384):
 
 Multi-node
 ```
 python run_with_submitit.py --nodes 2 --ngpus 8 \
---model stcnet_base --drop_path 0.8 --input_size 384 \
+--model sconvnet_base --drop_path 0.8 --input_size 384 \
 --batch_size 32 --lr 5e-5 --update_freq 1 \
 --warmup_epochs 0 --epochs 30 --weight_decay 1e-8  \
 --layer_decay 0.7 --head_init_scale 0.001 --cutmix 0 --mixup 0 \
@@ -311,7 +311,7 @@ python run_with_submitit.py --nodes 2 --ngpus 8 \
 Single-machine
 ```
 python -m torch.distributed.launch --nproc_per_node=8 main.py \
---model stcnet_base --drop_path 0.8 --input_size 384 \
+--model sconvnet_base --drop_path 0.8 --input_size 384 \
 --batch_size 32 --lr 5e-5 --update_freq 2 \
 --warmup_epochs 0 --epochs 30 --weight_decay 1e-8  \
 --layer_decay 0.7 --head_init_scale 0.001 --cutmix 0 --mixup 0 \
@@ -322,13 +322,13 @@ python -m torch.distributed.launch --nproc_per_node=8 main.py \
 
 <details>
 <summary>
-stcnet-L (384x384)
+sconvnet-L (384x384)
 </summary>
 
 Multi-node
 ```
 python run_with_submitit.py --nodes 2 --ngpus 8 \
---model stcnet_large --drop_path 0.95 --input_size 384 \
+--model sconvnet_large --drop_path 0.95 --input_size 384 \
 --batch_size 32 --lr 5e-5 --update_freq 1 \
 --warmup_epochs 0 --epochs 30 --weight_decay 1e-8  \
 --layer_decay 0.7 --head_init_scale 0.001 --cutmix 0 --mixup 0 \
@@ -340,7 +340,7 @@ python run_with_submitit.py --nodes 2 --ngpus 8 \
 Single-machine
 ```
 python -m torch.distributed.launch --nproc_per_node=8 main.py \
---model stcnet_large --drop_path 0.95 --input_size 384 \
+--model sconvnet_large --drop_path 0.95 --input_size 384 \
 --batch_size 32 --lr 5e-5 --update_freq 2 \
 --warmup_epochs 0 --epochs 30 --weight_decay 1e-8  \
 --layer_decay 0.7 --head_init_scale 0.001 --cutmix 0 --mixup 0 \
@@ -349,19 +349,19 @@ python -m torch.distributed.launch --nproc_per_node=8 main.py \
 --output_dir /path/to/save_results
 ``` 
 
-- The fine-tuning for ImageNet-1K pre-trained stcnet-L starts from the best ema weights during pre-training. You can add `--model_key model_ema` to load from a saved checkpoint that has `model_ema` as a key (e.g., obtained by training with `--model_ema true`), to load ema weights. Note that our provided pre-trained checkpoints only have `model` as the only key.
+- The fine-tuning for ImageNet-1K pre-trained sconvnet-L starts from the best ema weights during pre-training. You can add `--model_key model_ema` to load from a saved checkpoint that has `model_ema` as a key (e.g., obtained by training with `--model_ema true`), to load ema weights. Note that our provided pre-trained checkpoints only have `model` as the only key.
 
 </details>
 
 ### Fine-tune from ImageNet-22K pre-training
 We finetune from ImageNet-22K pre-trained models, in both 224 and 384 resolutions.
 
-stcnet-B fine-tuning on ImageNet-1K (224x224)
+sconvnet-B fine-tuning on ImageNet-1K (224x224)
 
 Multi-node
 ```
 python run_with_submitit.py --nodes 2 --ngpus 8 \
---model stcnet_base --drop_path 0.2 --input_size 224 \
+--model sconvnet_base --drop_path 0.2 --input_size 224 \
 --batch_size 32 --lr 5e-5 --update_freq 1 \
 --warmup_epochs 0 --epochs 30 --weight_decay 1e-8  \
 --layer_decay 0.8 --head_init_scale 0.001 --cutmix 0 --mixup 0 \
@@ -373,7 +373,7 @@ python run_with_submitit.py --nodes 2 --ngpus 8 \
 Single-machine
 ```
 python -m torch.distributed.launch --nproc_per_node=8 main.py \
---model stcnet_base --drop_path 0.2 --input_size 224 \
+--model sconvnet_base --drop_path 0.2 --input_size 224 \
 --batch_size 32 --lr 5e-5 --update_freq 2 \
 --warmup_epochs 0 --epochs 30 --weight_decay 1e-8  \
 --layer_decay 0.8 --head_init_scale 0.001 --cutmix 0 --mixup 0 \
@@ -384,13 +384,13 @@ python -m torch.distributed.launch --nproc_per_node=8 main.py \
 
 <details>
 <summary>
-stcnet-L (224x224)
+sconvnet-L (224x224)
 </summary>
 
 Multi-node
 ```
 python run_with_submitit.py --nodes 2 --ngpus 8 \
---model stcnet_large --drop_path 0.3 --input_size 224 \
+--model sconvnet_large --drop_path 0.3 --input_size 224 \
 --batch_size 32 --lr 5e-5 --update_freq 1 \
 --warmup_epochs 0 --epochs 30 --weight_decay 1e-8  \
 --layer_decay 0.8 --head_init_scale 0.001 --cutmix 0 --mixup 0 \
@@ -402,7 +402,7 @@ python run_with_submitit.py --nodes 2 --ngpus 8 \
 Single-machine
 ```
 python -m torch.distributed.launch --nproc_per_node=8 main.py \
---model stcnet_large --drop_path 0.3 --input_size 224 \
+--model sconvnet_large --drop_path 0.3 --input_size 224 \
 --batch_size 32 --lr 5e-5 --update_freq 2 \
 --warmup_epochs 0 --epochs 30 --weight_decay 1e-8  \
 --layer_decay 0.8 --head_init_scale 0.001 --cutmix 0 --mixup 0 \
@@ -415,13 +415,13 @@ python -m torch.distributed.launch --nproc_per_node=8 main.py \
 
 <details>
 <summary>
-stcnet-XL (224x224)
+sconvnet-XL (224x224)
 </summary>
 
 Multi-node
 ```
 python run_with_submitit.py --nodes 4 --ngpus 8 \
---model stcnet_xlarge --drop_path 0.4 --input_size 224 \
+--model sconvnet_xlarge --drop_path 0.4 --input_size 224 \
 --batch_size 16 --lr 5e-5 --update_freq 1 \
 --warmup_epochs 0 --epochs 30 --weight_decay 1e-8  \
 --layer_decay 0.8 --head_init_scale 0.001 --cutmix 0 --mixup 0 \
@@ -434,7 +434,7 @@ python run_with_submitit.py --nodes 4 --ngpus 8 \
 Single-machine
 ```
 python -m torch.distributed.launch --nproc_per_node=8 main.py \
---model stcnet_xlarge --drop_path 0.4 --input_size 224 \
+--model sconvnet_xlarge --drop_path 0.4 --input_size 224 \
 --batch_size 16 --lr 5e-5 --update_freq 4 \
 --warmup_epochs 0 --epochs 30 --weight_decay 1e-8  \
 --layer_decay 0.8 --head_init_scale 0.001 --cutmix 0 --mixup 0 \
@@ -448,13 +448,13 @@ python -m torch.distributed.launch --nproc_per_node=8 main.py \
 
 <details>
 <summary>
-stcnet-B (384x384)
+sconvnet-B (384x384)
 </summary>
 
 Multi-node
 ```
 python run_with_submitit.py --nodes 4 --ngpus 8 \
---model stcnet_base --drop_path 0.2 --input_size 384 \
+--model sconvnet_base --drop_path 0.2 --input_size 384 \
 --batch_size 16 --lr 5e-5 --update_freq 1 \
 --warmup_epochs 0 --epochs 30 --weight_decay 1e-8  \
 --layer_decay 0.8 --head_init_scale 0.001 --cutmix 0 --mixup 0 \
@@ -466,7 +466,7 @@ python run_with_submitit.py --nodes 4 --ngpus 8 \
 Single-machine   
 ```
 python -m torch.distributed.launch --nproc_per_node=8 main.py \
---model stcnet_base --drop_path 0.2 --input_size 384 \
+--model sconvnet_base --drop_path 0.2 --input_size 384 \
 --batch_size 16 --lr 5e-5 --update_freq 4 \
 --warmup_epochs 0 --epochs 30 --weight_decay 1e-8  \
 --layer_decay 0.8 --head_init_scale 0.001 --cutmix 0 --mixup 0 \
@@ -479,13 +479,13 @@ python -m torch.distributed.launch --nproc_per_node=8 main.py \
 
 <details>
 <summary>
-stcnet-L (384x384)
+sconvnet-L (384x384)
 </summary>
 
 Multi-node
 ```
 python run_with_submitit.py --nodes 4 --ngpus 8 \
---model stcnet_large --drop_path 0.3 --input_size 384 \
+--model sconvnet_large --drop_path 0.3 --input_size 384 \
 --batch_size 16 --lr 5e-5 --update_freq 1 \
 --warmup_epochs 0 --epochs 30 --weight_decay 1e-8  \
 --layer_decay 0.8 --head_init_scale 0.001 --cutmix 0 --mixup 0 \
@@ -497,7 +497,7 @@ python run_with_submitit.py --nodes 4 --ngpus 8 \
 Single-machine    
 ```
 python -m torch.distributed.launch --nproc_per_node=8 main.py \
---model stcnet_large --drop_path 0.3 --input_size 384 \
+--model sconvnet_large --drop_path 0.3 --input_size 384 \
 --batch_size 16 --lr 5e-5 --update_freq 4 \
 --warmup_epochs 0 --epochs 30 --weight_decay 1e-8  \
 --layer_decay 0.8 --head_init_scale 0.001 --cutmix 0 --mixup 0 \
@@ -510,13 +510,13 @@ python -m torch.distributed.launch --nproc_per_node=8 main.py \
 
 <details>
 <summary>
-stcnet-XL (384x384)
+sconvnet-XL (384x384)
 </summary>
 
 Multi-node
 ```
 python run_with_submitit.py --nodes 8 --ngpus 8 \
---model stcnet_xlarge --drop_path 0.4 --input_size 384 \
+--model sconvnet_xlarge --drop_path 0.4 --input_size 384 \
 --batch_size 8 --lr 5e-5 --update_freq 1 \
 --warmup_epochs 0 --epochs 30 --weight_decay 1e-8  \
 --layer_decay 0.8 --head_init_scale 0.001 --cutmix 0 --mixup 0 \
@@ -529,7 +529,7 @@ python run_with_submitit.py --nodes 8 --ngpus 8 \
 Single-machine
 ```
 python -m torch.distributed.launch --nproc_per_node=8 main.py \
---model stcnet_xlarge --drop_path 0.4 --input_size 384 \
+--model sconvnet_xlarge --drop_path 0.4 --input_size 384 \
 --batch_size 8 --lr 5e-5 --update_freq 8 \
 --warmup_epochs 0 --epochs 30 --weight_decay 1e-8  \
 --layer_decay 0.8 --head_init_scale 0.001 --cutmix 0 --mixup 0 \
