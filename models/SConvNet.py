@@ -123,19 +123,30 @@ class SConvNet(nn.Module):
                  ):
         super().__init__()
 
-        self.stacked_size=[4,2,2,2,1]
-        dim_in = in_chans *(self.stacked_size[0]**2)
+        self.stem_stacked_size = 2
+        dim_in = in_chans * (self.stem_stacked_size ** 2)
+        dim_out = dims[0]
+        self.stem = nn.Sequential(
+            nn.Conv2d(dim_in, dim_out, kernel_size=3, padding=1, groups=1),
+            LayerNorm(dim_out, eps=1e-6),
+            nn.GELU(),
+            nn.Conv2d(dim_out, dim_out, kernel_size=1, padding=0),
+            LayerNorm(dim_out, eps=1e-6),
+            nn.GELU())
+
+        self.stacked_size = [2, 2, 2, 2]
+        dim_in = dim_out* (self.stacked_size[0] ** 2)
         self.downsample_layers = nn.ModuleList()  # stem and 3 intermediate downsampling conv layers
         for i in range(4):
             downsample_layer = nn.Sequential(
-                nn.Conv2d(dim_in, dim_in, kernel_size=7, padding=3, groups=4**i),
+                nn.Conv2d(dim_in, dim_in, kernel_size=3, padding=1, groups=2**i),
                 LayerNorm(dim_in, eps=1e-6),
                 nn.GELU(),
                 nn.Conv2d(dim_in, dims[i], kernel_size=1, padding=0),
                 LayerNorm(dims[i], eps=1e-6),
                 nn.GELU())
             self.downsample_layers.append(downsample_layer)
-            dim_in = dims[i]*(self.stacked_size[i+1]**2)
+            dim_in = dims[i]*(self.stacked_size[i]**2)
 
         self.stages = nn.ModuleList()  # 4 feature resolution stages, each consisting of multiple residual blocks
         dp_rates = [x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))]
@@ -154,10 +165,11 @@ class SConvNet(nn.Module):
             LayerNorm(out_channels, eps=1e-6, data_format="channels_first"),
             nn.GELU(),
             nn.AdaptiveAvgPool2d((1, 1)),
-            nn.Flatten()
+            nn.Flatten(),
+            nn.Dropout(p=0.75, inplace=True)
         )
 
-        self.norm = nn.LayerNorm(out_channels, eps=1e-6)  # final norm layer
+        # self.norm = nn.LayerNorm(out_channels, eps=1e-6)  # final norm layer
         self.head = nn.Linear(out_channels, num_classes)
 
         self.apply(self._init_weights)
@@ -170,11 +182,13 @@ class SConvNet(nn.Module):
             nn.init.constant_(m.bias, 0)
 
     def forward_features(self, x):
+        x = F.pixel_unshuffle(x, self.stem_stacked_size)
+        x = self.stem(x)
         for i in range(4):
             x = F.pixel_unshuffle(x, self.stacked_size[i])
             x = self.downsample_layers[i](x)
             x = self.stages[i](x)
-        return self.norm(self.conv_out(x))
+        return self.conv_out(x)
 
     def forward(self, x):
         x = self.forward_features(x)
